@@ -1,13 +1,13 @@
 import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Home: FC = () => {
+const Logout: FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/dress-list");
+    navigate("/");
   }, [navigate])
   
-  return <div>Home</div>;
+  return <div>Logout!</div>;
 };
 
-export default Home;
+export default Logout;
