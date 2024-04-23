@@ -1,6 +1,6 @@
 import { FC, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import DogSVG from "../../images/logo/logo-hb.png";
+import Logo from "../../images/logo/logo-hb.png";
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Login: FC = () => {
                   <p className="mb-20">Loguéate Hellencita :)</p>
 
                   <div className="w-full">
-                    <img src={DogSVG} alt="svg" className=" w-3/4 mx-auto" />
+                    <img src={Logo} alt="svg" className=" w-3/4 mx-auto" />
                   </div>
                 </div>
               </div>
@@ -31,7 +31,7 @@ const Login: FC = () => {
                   <div className="text-center">
                     <img
                       className="inline-block lg:hidden max-w-59 mb-4"
-                      src={DogSVG}
+                      src={Logo}
                       alt="Logo"
                     />
                   </div>
