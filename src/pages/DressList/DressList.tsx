@@ -1,7 +1,11 @@
 import { FC } from "react";
 
 const DressList: FC = () => {
-  return <div>Dress List</div>;
+  return (
+    <div>
+      <h1>Dress List</h1>
+    </div>
+  );
 };
 
 export default DressList;
