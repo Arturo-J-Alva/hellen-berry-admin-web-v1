@@ -1,10 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+import { nextui } from "@nextui-org/react";
 import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/components/**/*.{jsx,tsx}",
+    "./src/pages/**/*.{jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
   darkMode: "class",
   theme: {
     fontFamily: {
@@ -252,5 +258,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [nextui()],
 };
