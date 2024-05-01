@@ -1,4 +1,5 @@
 import React, { FC, HTMLProps, useEffect, useRef, useState } from "react";
+import { DressSize } from "../../domain";
 
 interface Option {
   value: string;
@@ -11,7 +12,7 @@ interface SelectorMultiProps extends HTMLProps<HTMLDivElement> {
   id: string;
   label: string;
   optionsCombo: { value: string; label: string }[];
-  exportOptionsSelected?: (optionsValue: string[]) => void;
+  exportOptionsSelected?: (optionsValue: DressSize[]) => void;
   placeholder?: string;
 }
 
@@ -35,7 +36,7 @@ const SelectorMulti: FC<SelectorMultiProps> = ({
       const optionsSelected = options
         .filter(({ selected }) => selected)
         .map(({ value }) => value);
-      exportOptionsSelected(optionsSelected);
+      exportOptionsSelected(optionsSelected as DressSize[]);
     }
   }, [options, exportOptionsSelected]);
 

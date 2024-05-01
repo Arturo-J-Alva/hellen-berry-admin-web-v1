@@ -1,6 +1,6 @@
-import { FC, HTMLAttributes } from "react";
+import { ButtonHTMLAttributes, FC } from "react";
 
-interface ButtonDefaultProps extends HTMLAttributes<HTMLButtonElement> {}
+interface ButtonDefaultProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const ButtonDefault: FC<ButtonDefaultProps> = ({
   children,

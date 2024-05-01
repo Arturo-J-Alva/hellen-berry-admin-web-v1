@@ -1,10 +1,11 @@
-import { FC, useState } from "react";
+import { FC, FormEvent, useCallback, useState } from "react";
 import {
   ButtonDefault,
   InputDefault,
   SelectorMulti,
   SelectorOne,
 } from "../../components";
+import { DressColorData, DressSize } from "../../domain";
 import DressColorsGroup from "./DressColorsGroup";
 
 const dressList = [
@@ -19,17 +20,33 @@ const sizeList = [
   { value: "L", label: "L" },
   { value: "XL", label: "XL" },
 ];
+
 const DressAdd: FC = () => {
   const [dressType, setDressType] = useState("");
+  const [model, setModel] = useState("");
+  const [dressSize, setDressSize] = useState<DressSize[]>([]);
+  const [price, setPrice] = useState("");
+  const [colorsData, setColorsData] = useState<DressColorData[]>([]);
+
+  const handledSelectorMulti = useCallback((options: DressSize[]) => {
+    setDressSize(options);
+  }, []);
+
+  const handleSubtmi = (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log({ dressType, model, dressSize, price, colorsData });
+  }
+
   return (
     <div>
       Agregar modelo de vestido
-      <div className=" max-w-150 mx-auto">
+      <form className=" max-w-150 mx-auto" onSubmit={handleSubtmi}>
         <div className="rounded-md border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-col gap-5.5 p-6.5">
             <InputDefault
               label="Nombre del modelo"
               placeholder="Escribe el nombre del vestido"
+              onChange={(e) => setModel(e.target.value)}
             />
 
             <SelectorOne
@@ -43,20 +60,22 @@ const DressAdd: FC = () => {
               id="dressSize"
               label="Tallas disponible"
               optionsCombo={sizeList}
-              exportOptionsSelected={(options) => console.log(options)}
+              exportOptionsSelected={handledSelectorMulti}
             />
 
             <InputDefault
               label="Precio"
               placeholder="Escribe el precio del vestido"
+              type="number"
+              onChange={(e) => setPrice(e.target.value)}
             />
           </div>
-          <DressColorsGroup />
+          <DressColorsGroup exportDataItems={(items) => setColorsData(items)} />
         </div>
-      </div>
-      <div className="text-center mt-6">
-        <ButtonDefault className="mx-auto">Agregar</ButtonDefault>
-      </div>
+        <div className="text-center mt-6">
+          <ButtonDefault className="mx-auto" type="submit" >Agregar</ButtonDefault>
+        </div>
+      </form>
     </div>
   );
 };
