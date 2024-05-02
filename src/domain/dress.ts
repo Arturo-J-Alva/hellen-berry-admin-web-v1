@@ -14,7 +14,6 @@ export enum DressSize {
 export interface DressColor {
   color: string;
   image: string;
-  isPopular?: boolean;
   hide?: boolean;
 }
 
@@ -26,6 +25,7 @@ export interface DressModel {
   modifiedAt: string;
   sizes: DressSize[];
   colors: DressColor[];
+  isPopular?: boolean;
   price?: string;
 }
 
@@ -38,7 +38,7 @@ export interface DressInput
   colors: DressColorInput[];
 }
 
-export interface DressInputData extends Omit<DressInput, "colors"> {
+export interface DressInputBody extends Omit<DressInput, "colors"> {
   colors: Omit<DressColorInput, "file">[];
 }
 

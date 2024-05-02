@@ -5,7 +5,14 @@ import {
   SelectorMulti,
   SelectorOne,
 } from "../../components";
-import { DressColorData, DressSize } from "../../domain";
+import {
+  DressColorData,
+  DressColorInput,
+  DressInput,
+  DressSize,
+  DressType,
+} from "../../domain";
+import { postDress } from "../../services/postDress";
 import DressColorsGroup from "./DressColorsGroup";
 
 const dressList = [
@@ -32,10 +39,24 @@ const DressAdd: FC = () => {
     setDressSize(options);
   }, []);
 
-  const handleSubtmi = (e:FormEvent<HTMLFormElement>) => {
+  const handleSubtmi = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    console.log({ dressType, model, dressSize, price, colorsData });
-  }
+    const formData: DressInput = {
+      model,
+      type: dressType as DressType,
+      sizes: dressSize,
+      price,
+      isPopular: false,
+      colors: colorsData.map(({ color, file }) => ({
+        color,
+        file,
+        hide: false,
+      })) as DressColorInput[],
+    };
+    console.log(formData);
+    const res = await postDress(formData);
+    console.log("res:", res);
+  };
 
   return (
     <div>
@@ -73,7 +94,9 @@ const DressAdd: FC = () => {
           <DressColorsGroup exportDataItems={(items) => setColorsData(items)} />
         </div>
         <div className="text-center mt-6">
-          <ButtonDefault className="mx-auto" type="submit" >Agregar</ButtonDefault>
+          <ButtonDefault className="mx-auto" type="submit">
+            Agregar
+          </ButtonDefault>
         </div>
       </form>
     </div>

@@ -112,8 +112,23 @@ const SelectorMulti: FC<SelectorMultiProps> = ({
       setShow(false);
     };
     document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
+    return () => {
+      document.removeEventListener("click", clickHandler);
+    };
   });
+
+  useEffect(() => {
+    const keyHandler = (e: KeyboardEvent) => {
+      if (!e.repeat) {
+        setShow(false);
+      }
+    };
+
+    document.addEventListener("keydown", keyHandler);
+    return () => {
+      document.removeEventListener("keydown", keyHandler);
+    };
+  }, []);
 
   return (
     <div className={`relative z-50 ${className}`} {...props}>

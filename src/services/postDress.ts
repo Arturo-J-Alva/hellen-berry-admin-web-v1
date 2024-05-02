@@ -1,15 +1,11 @@
 import { baseUrl } from "../config/global";
-import { DressInput, DressInputData } from "../domain";
-
-export interface UploadFileResponse {
-  link: string;
-}
+import { DressInput, DressInputBody, DressModel } from "../domain";
 
 const getExtension = (str: string) => str.slice(str.lastIndexOf("."));
 
 export const postDress = async (
   dressInput: DressInput
-): Promise<UploadFileResponse | undefined> => {
+): Promise<DressModel[] | undefined> => {
   const { colors } = dressInput;
 
   const formData = new FormData();
@@ -22,11 +18,10 @@ export const postDress = async (
     );
   });
 
-  const data: DressInputData = {
+  const data: DressInputBody = {
     ...dressInput,
-    colors: colors.map(({ color, isPopular, hide }) => ({
+    colors: colors.map(({ color, hide }) => ({
       color,
-      isPopular,
       hide,
     })),
   };
@@ -38,7 +33,7 @@ export const postDress = async (
     body: formData,
   });
 
-  const json = (await res.json()) as UploadFileResponse;
+  const json = (await res.json()) as DressModel[];
 
   if (res.ok) {
     return json;
