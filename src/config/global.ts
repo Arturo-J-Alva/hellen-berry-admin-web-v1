@@ -1,1 +1,1 @@
-export const baseUrl = "https://9607gfzjgi.execute-api.us-east-1.amazonaws.com/dev";
+export const baseUrl = "https://hb6nrgce9k.execute-api.us-east-1.amazonaws.com/dev";

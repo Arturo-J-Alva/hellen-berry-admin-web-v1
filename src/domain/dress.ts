@@ -25,7 +25,8 @@ export interface DressModel {
   modifiedAt: string;
   sizes: DressSize[];
   colors: DressColor[];
-  isPopular?: boolean;
+  isPopular: boolean;
+  hide: boolean;
   price?: string;
 }
 

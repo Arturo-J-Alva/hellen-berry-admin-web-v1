@@ -14,6 +14,7 @@ interface SelectorMultiProps extends HTMLProps<HTMLDivElement> {
   optionsCombo: { value: string; label: string }[];
   exportOptionsSelected?: (optionsValue: DressSize[]) => void;
   placeholder?: string;
+  clearData?: boolean
 }
 
 const SelectorMulti: FC<SelectorMultiProps> = ({
@@ -23,6 +24,7 @@ const SelectorMulti: FC<SelectorMultiProps> = ({
   exportOptionsSelected,
   placeholder,
   className,
+  clearData,
   ...props
 }) => {
   const [options, setOptions] = useState<Option[]>([]);
@@ -30,6 +32,14 @@ const SelectorMulti: FC<SelectorMultiProps> = ({
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if(clearData){
+      setSelected([])
+      setShow(false)
+    }
+  }, [clearData])
+  
 
   useEffect(() => {
     if (exportOptionsSelected) {

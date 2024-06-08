@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useState } from "react";
+import { FC, HTMLAttributes, useEffect, useState } from "react";
 
 interface SelectorOneProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
@@ -18,6 +18,12 @@ const SelectorOne: FC<SelectorOneProps> = ({
   ...props
 }) => {
   const [isOptionSelected, setIsOptionSelected] = useState(false);
+
+  useEffect(() => {
+    if (!value) {
+      setIsOptionSelected(false);
+    }
+  }, [value]);
 
   const changeTextColor = () => {
     setIsOptionSelected(true);

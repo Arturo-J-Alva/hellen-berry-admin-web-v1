@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 import { PageLayout } from "./components";
 import { DressAdd, DressList, Home, Login, Logout, User } from "./pages";
 
@@ -8,7 +9,8 @@ import { DressAdd, DressList, Home, Login, Logout, User } from "./pages";
 
 const App: FC = () => {
   return (
-    <Router>
+ <div>
+     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route
@@ -27,6 +29,7 @@ const App: FC = () => {
         />
       </Routes>
     </Router>
+ </div>
   );
 };
 

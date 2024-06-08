@@ -1,4 +1,6 @@
+import { Radio, RadioGroup } from "@nextui-org/react";
 import { FC, FormEvent, useCallback, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import {
   ButtonDefault,
   InputDefault,
@@ -6,6 +8,7 @@ import {
   SelectorOne,
 } from "../../components";
 import {
+  Confirmation,
   DressColorData,
   DressColorInput,
   DressInput,
@@ -13,6 +16,8 @@ import {
   DressType,
 } from "../../domain";
 import { postDress } from "../../services/postDress";
+import { stringToBoolean } from "../../utils";
+import { booleanToString } from "../../utils/booleanToString";
 import DressColorsGroup from "./DressColorsGroup";
 
 const dressList = [
@@ -28,12 +33,52 @@ const sizeList = [
   { value: "XL", label: "XL" },
 ];
 
+const notify = () => toast("Modelo registrado!", { position: "bottom-center" });
+
 const DressAdd: FC = () => {
   const [dressType, setDressType] = useState("");
   const [model, setModel] = useState("");
   const [dressSize, setDressSize] = useState<DressSize[]>([]);
   const [price, setPrice] = useState("");
   const [colorsData, setColorsData] = useState<DressColorData[]>([]);
+  const [resetColorsData, setResetColorsData] = useState(false);
+  const [isPopular, setIsPopular] = useState(false);
+  const [hide, setHide] = useState(false);
+  const [resetDressSize, setResetDressSize] = useState(false);
+
+  const goResetDressSize = () => {
+    setDressSize([]);
+    setResetDressSize(true);
+    setTimeout(() => {
+      setResetDressSize(false);
+    }, 10);
+  };
+
+  const goResetColorsData = () => {
+    setColorsData([]);
+    setResetColorsData(true);
+    setTimeout(() => {
+      setResetColorsData(false);
+    }, 10);
+  };
+
+  const clearForm = () => {
+    setDressType("");
+    setModel("");
+    goResetDressSize();
+    setPrice("");
+    goResetColorsData();
+    setIsPopular(false);
+    setHide(false);
+  };
+
+  const isEnabled = Boolean(
+    dressType &&
+      model &&
+      dressSize.length &&
+      price &&
+      colorsData.map(({ color, file }) => color && file).every(Boolean)
+  );
 
   const handledSelectorMulti = useCallback((options: DressSize[]) => {
     setDressSize(options);
@@ -46,16 +91,17 @@ const DressAdd: FC = () => {
       type: dressType as DressType,
       sizes: dressSize,
       price,
-      isPopular: false,
+      isPopular: isPopular,
+      hide,
       colors: colorsData.map(({ color, file }) => ({
         color,
         file,
-        hide: false,
       })) as DressColorInput[],
     };
-    console.log(formData);
     const res = await postDress(formData);
     console.log("res:", res);
+    clearForm();
+    notify();
   };
 
   return (
@@ -68,6 +114,7 @@ const DressAdd: FC = () => {
               label="Nombre del modelo"
               placeholder="Escribe el nombre del vestido"
               onChange={(e) => setModel(e.target.value)}
+              value={model}
             />
 
             <SelectorOne
@@ -82,6 +129,7 @@ const DressAdd: FC = () => {
               label="Tallas disponible"
               optionsCombo={sizeList}
               exportOptionsSelected={handledSelectorMulti}
+              clearData={resetDressSize}
             />
 
             <InputDefault
@@ -89,16 +137,63 @@ const DressAdd: FC = () => {
               placeholder="Escribe el precio del vestido"
               type="number"
               onChange={(e) => setPrice(e.target.value)}
+              value={price}
             />
+
+            <div>
+              <p className="mb-3 block text-black dark:text-white" id="">
+                Es popular
+              </p>
+              <RadioGroup
+                orientation="horizontal"
+                onChange={(e) =>
+                  setIsPopular(stringToBoolean(e.target.value as Confirmation))
+                }
+                defaultValue={Confirmation.No}
+                value={booleanToString(isPopular)}
+              >
+                <Radio value={Confirmation.Yes} className="mr-2">
+                  Sí
+                </Radio>
+                <Radio value={Confirmation.No}>No</Radio>
+              </RadioGroup>
+            </div>
+
+            <div>
+              <p className="mb-3 block text-black dark:text-white" id="">
+                Ocultar
+              </p>
+              <RadioGroup
+                orientation="horizontal"
+                onChange={(e) =>
+                  setHide(stringToBoolean(e.target.value as Confirmation))
+                }
+                defaultValue={Confirmation.No}
+                value={booleanToString(hide)}
+              >
+                <Radio value={Confirmation.Yes} className="mr-2">
+                  Sí
+                </Radio>
+                <Radio value={Confirmation.No}>No</Radio>
+              </RadioGroup>
+            </div>
           </div>
-          <DressColorsGroup exportDataItems={(items) => setColorsData(items)} />
+          <DressColorsGroup
+            exportDataItems={(items) => setColorsData(items)}
+            resetDataItems={resetColorsData}
+          />
         </div>
         <div className="text-center mt-6">
-          <ButtonDefault className="mx-auto" type="submit">
+          <ButtonDefault
+            className="mx-auto"
+            type="submit"
+            disabled={!isEnabled}
+          >
             Agregar
           </ButtonDefault>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
