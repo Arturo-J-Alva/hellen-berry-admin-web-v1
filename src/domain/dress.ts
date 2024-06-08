@@ -18,16 +18,15 @@ export interface DressColor {
 }
 
 export interface DressModel {
-  id: string;
   model: string;
   type: DressType;
   createdAt: string;
-  modifiedAt: string;
   sizes: DressSize[];
   colors: DressColor[];
   isPopular: boolean;
   hide: boolean;
-  price?: string;
+  price: string;
+  modifiedAt: string;
 }
 
 export interface DressColorInput extends Omit<DressColor, "image"> {

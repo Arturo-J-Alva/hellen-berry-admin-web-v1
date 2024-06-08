@@ -11,86 +11,107 @@ import {
   Tooltip,
   User,
 } from "@nextui-org/react";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DeleteIcon, EditIcon, EyeIcon } from "../../assets/svg";
-import { ColumnData, UserData, columns, users } from "./data";
-
-enum StatusColor {
-  Active = "success",
-  Paused = "danger",
-  Vacation = "warning",
-}
-
-interface StatusColorMap {
-  [key: string]: StatusColor;
-}
-const statusColorMap: StatusColorMap = {
-  active: StatusColor.Active,
-  paused: StatusColor.Paused,
-  vacation: StatusColor.Vacation,
-};
+import { DressModel, DressType } from "../../domain";
+import { formtDate } from "../../services/formtDate";
+import { getDress } from "../../services/getDress";
+import { ColumnData, columns } from "./data";
 
 const DressList: FC = () => {
+  const [dresses, setDresses] = useState<DressModel[]>([]);
   const [page, setPage] = useState(1);
-  const rowsPerPage = 2;
+  const [isLoading, setIsLoading] = useState(false);
+  const runOnce = useRef(false);
+  const rowsPerPage = 10;
 
-  const pages = Math.ceil(users.length / rowsPerPage);
+  const pages = Math.ceil(dresses.length / rowsPerPage);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
+    return dresses.slice(start, end);
+  }, [page, dresses]);
 
-    return users.slice(start, end);
-  }, [page]);
+  useEffect(() => {
+    const getDressesList = async () => {
+      setIsLoading(true);
+      const dressesModel = await getDress();
+      setIsLoading(false);
+      setDresses(dressesModel as DressModel[]);
+    };
+    if (runOnce.current === false) {
+      getDressesList();
+    }
 
-  const renderCell = useCallback((user: UserData, columnKey: string) => {
-    const cellValue = user[columnKey as keyof UserData];
+    return () => {
+      runOnce.current = true;
+    };
+  }, []);
 
+  const renderCell = useCallback((address: DressModel, columnKey: string) => {
     switch (columnKey) {
-      case "name":
+      case "model": {
         return (
-          <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-sm capitalize">{cellValue}</p>
-            <p className="text-bold text-sm capitalize text-default-400">
-              {user.team}
-            </p>
+          <div className="flex flex-row">
+            <div className=" w-32 pr-2">
+              <h3 className=" font-bold">{address.model}</h3>
+              <p>{address.type === DressType.WOMEN ? "MUJER" : "NIÑA"}</p>
+            </div>
+            {address.colors.map((color) => (
+              <User
+                avatarProps={{ radius: "none", src: color.image }}
+                description=""
+                name=""
+              />
+            ))}
           </div>
         );
-      case "status":
+      }
+      case "hide":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={address.hide ? "success" : "warning"}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {address.hide ? "Sí" : "No"}
+          </Chip>
+        );
+      case "price":
+        return address.price;
+        case "size":
+        return address.sizes.join(", ");
+      case "create":
+        return formtDate(address.createdAt);
+      case "modif":
+        return formtDate(address.modifiedAt);
+      case "popular":
+        return (
+          <Chip
+            className="capitalize"
+            color={address.isPopular ? "success" : "warning"}
+            size="sm"
+            variant="flat"
+          >
+            {address.isPopular ? "Sí" : "No"}
           </Chip>
         );
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Details">
+            <Tooltip content="Detalles">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                 <EyeIcon />
               </span>
             </Tooltip>
-            <Tooltip content="Edit user">
+            <Tooltip content="Editar modelo">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Delete user">
+            <Tooltip color="danger" content="Eliminar modelo">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon />
               </span>
@@ -98,7 +119,7 @@ const DressList: FC = () => {
           </div>
         );
       default:
-        return cellValue;
+        return "";
     }
   }, []);
 
@@ -129,18 +150,13 @@ const DressList: FC = () => {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={items} loadingState="loading" loadingContent={<Spinner />}>
-        {(item: {
-          id: number;
-          name: string;
-          role: string;
-          team: string;
-          status: string;
-          age: string;
-          avatar: string;
-          email: string;
-        }) => (
-          <TableRow key={item.id}>
+      <TableBody
+        items={items}
+        loadingState={isLoading ? "loading" : "idle"}
+        loadingContent={<Spinner />}
+      >
+        {(item: DressModel) => (
+          <TableRow key={`${item.model}-${item.type}`}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey as string)}</TableCell>
             )}
