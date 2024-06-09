@@ -1,5 +1,6 @@
 import { Radio, RadioGroup } from "@nextui-org/react";
-import { FC, FormEvent, useCallback, useState } from "react";
+import { FC, FormEvent, useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import {
   ButtonDefault,
@@ -12,11 +13,12 @@ import {
   DressColorData,
   DressColorInput,
   DressInput,
+  DressModel,
   DressSize,
   DressType,
 } from "../../domain";
 import { postDress } from "../../services/postDress";
-import { stringToBoolean } from "../../utils";
+import { generateUniqueId, stringToBoolean } from "../../utils";
 import { booleanToString } from "../../utils/booleanToString";
 import DressColorsGroup from "./DressColorsGroup";
 
@@ -33,9 +35,15 @@ const sizeList = [
   { value: "XL", label: "XL" },
 ];
 
-const notify = () => toast("Modelo registrado!", { position: "bottom-center" });
+const notify = () => toast("Modelo registrado!", { position: "top-left" });
 
 const DressAdd: FC = () => {
+  const location = useLocation();
+  const pathname = location.pathname;
+  const dressData = location.state?.dress as DressModel | undefined;
+  const isEditPage = pathname === "/dress-edit";
+  const isAddPage = pathname === "/dress-add";
+
   const [dressType, setDressType] = useState("");
   const [model, setModel] = useState("");
   const [dressSize, setDressSize] = useState<DressSize[]>([]);
@@ -62,7 +70,7 @@ const DressAdd: FC = () => {
     }, 10);
   };
 
-  const clearForm = () => {
+  const clearForm = useCallback(() => {
     setDressType("");
     setModel("");
     goResetDressSize();
@@ -70,21 +78,50 @@ const DressAdd: FC = () => {
     goResetColorsData();
     setIsPopular(false);
     setHide(false);
-  };
+  }, []);
+
+  const fillInitialForm = useCallback(() => {
+    if (dressData) {
+      setDressType(dressData.type);
+      setModel(dressData.model);
+      setDressSize(dressData.sizes);
+      setPrice(dressData.price);
+      setColorsData(
+        dressData.colors.map(({ color, image }, index) => ({
+          id: generateUniqueId(index),
+          color,
+          image,
+        }))
+      );
+      setIsPopular(dressData.isPopular);
+      setHide(dressData.hide);
+    }
+  }, [dressData]);
+
+  useEffect(() => {
+    if (isEditPage) {
+      fillInitialForm();
+    }
+    if (isAddPage) {
+      clearForm();
+    }
+  }, [isEditPage, isAddPage, clearForm, fillInitialForm]);
 
   const isEnabled = Boolean(
     dressType &&
       model &&
       dressSize.length &&
       price &&
-      colorsData.map(({ color, file }) => color && file).every(Boolean)
+      colorsData
+        .map(({ color, file, image }) => color && ((!file && image) || file))
+        .every(Boolean)
   );
 
   const handledSelectorMulti = useCallback((options: DressSize[]) => {
     setDressSize(options);
   }, []);
 
-  const handleSubtmi = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const formData: DressInput = {
       model,
@@ -98,16 +135,16 @@ const DressAdd: FC = () => {
         file,
       })) as DressColorInput[],
     };
-    const res = await postDress(formData);
-    console.log("res:", res);
+    await postDress(formData);
+
     clearForm();
     notify();
   };
 
   return (
     <div>
-      Agregar modelo de vestido
-      <form className=" max-w-150 mx-auto" onSubmit={handleSubtmi}>
+      {dressData ? "Editar" : "Agregar"} modelo de vestido
+      <form className=" max-w-150 mx-auto" onSubmit={handleSubmit}>
         <div className="rounded-md border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-col gap-5.5 p-6.5">
             <InputDefault
@@ -125,9 +162,14 @@ const DressAdd: FC = () => {
             />
 
             <SelectorMulti
-              id="dressSize"
+              id={`dressSize-${pathname.slice(1)}`}
               label="Tallas disponible"
-              optionsCombo={sizeList}
+              optionsCombo={sizeList.map((size) => ({
+                ...size,
+                selected: dressData?.sizes.some(
+                  (dress) => dress === size.value
+                ),
+              }))}
               exportOptionsSelected={handledSelectorMulti}
               clearData={resetDressSize}
             />
@@ -181,6 +223,7 @@ const DressAdd: FC = () => {
           <DressColorsGroup
             exportDataItems={(items) => setColorsData(items)}
             resetDataItems={resetColorsData}
+            dataForEdit={dressData?.colors}
           />
         </div>
         <div className="text-center mt-6">
@@ -189,7 +232,7 @@ const DressAdd: FC = () => {
             type="submit"
             disabled={!isEnabled}
           >
-            Agregar
+            {dressData ? "Editar" : "Agregar"}
           </ButtonDefault>
         </div>
       </form>

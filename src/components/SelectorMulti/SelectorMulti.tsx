@@ -11,10 +11,10 @@ interface Option {
 interface SelectorMultiProps extends HTMLProps<HTMLDivElement> {
   id: string;
   label: string;
-  optionsCombo: { value: string; label: string }[];
+  optionsCombo: { value: string; label: string; selected?: boolean }[];
   exportOptionsSelected?: (optionsValue: DressSize[]) => void;
   placeholder?: string;
-  clearData?: boolean
+  clearData?: boolean;
 }
 
 const SelectorMulti: FC<SelectorMultiProps> = ({
@@ -34,12 +34,11 @@ const SelectorMulti: FC<SelectorMultiProps> = ({
   const trigger = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if(clearData){
-      setSelected([])
-      setShow(false)
+    if (clearData) {
+      setSelected([]);
+      setShow(false);
     }
-  }, [clearData])
-  
+  }, [clearData]);
 
   useEffect(() => {
     if (exportOptionsSelected) {
@@ -59,14 +58,20 @@ const SelectorMulti: FC<SelectorMultiProps> = ({
           newOptions.push({
             value: select.options[i].value,
             text: select.options[i].innerText,
-            selected: select.options[i].hasAttribute("selected"),
+            selected: optionsCombo[i].selected || false,
           });
         }
         setOptions(newOptions);
+        setSelected(
+          newOptions
+            .filter((option) => option.selected)
+            .map((option) => newOptions.indexOf(option))
+        );
       }
     };
 
     loadOptions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const open = () => {
@@ -91,7 +96,6 @@ const SelectorMulti: FC<SelectorMultiProps> = ({
         setSelected(selected.filter((i) => i !== index));
       }
     }
-
     setOptions(newOptions);
   };
 

@@ -1,3 +1,4 @@
+import { Image } from "@nextui-org/react";
 import { Dispatch, FC, useEffect, useState } from "react";
 import { AddCircleIcon, TrashIcon } from "../../assets/svg";
 import { InputDefault, InputFile } from "../../components";
@@ -5,11 +6,13 @@ import { DressColorData } from "../../domain";
 
 interface DressColorProps {
   index: number;
+  color: string;
   addItem: () => void;
   deleteItem: (index: number) => void;
   lastIndex: number;
   setDataItems: Dispatch<React.SetStateAction<DressColorData[]>>;
   dataWasFilled: boolean;
+  image?: string;
 }
 
 const classesInitial = "opacity-0 -translate-y-10";
@@ -21,6 +24,8 @@ const DressColorItem: FC<DressColorProps> = ({
   lastIndex,
   setDataItems,
   dataWasFilled,
+  color,
+  image,
 }) => {
   const numberItem = index + 1;
   const lastNumberItem = lastIndex + 1;
@@ -50,6 +55,7 @@ const DressColorItem: FC<DressColorProps> = ({
 
       <InputDefault
         label={`Color ${numberItem}`}
+        value={color}
         placeholder="Escribe el color del vestido"
         onChange={(e) => {
           setDataItems((prev) => {
@@ -60,11 +66,20 @@ const DressColorItem: FC<DressColorProps> = ({
         }}
       />
 
+      {image  && (
+        <>
+          <label className="mb-3 block text-black dark:text-white">{`Imagen ${numberItem}`}</label>
+          <div className="flex flex-row justify-center">
+            <Image isZoomed width={240} alt={color} src={image} />
+          </div>
+        </>
+      )}
       <InputFile
-        label={`Imagen ${numberItem}`}
+        label={!image ? `Imagen ${numberItem}` : "Cambiar imagen"}
         exportFile={(file) => {
           setDataItems((prev) => {
             const newDataItems = [...prev];
+            newDataItems[index].image = '';
             newDataItems[index].file = file;
             return newDataItems;
           });

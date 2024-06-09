@@ -9,7 +9,7 @@ const InputDefault: FC<InputDefaultProps> = ({
   ...rest
 }) => {
   return (
-    <div {...rest}>
+    <div>
       <label className="mb-3 block text-black dark:text-white">{label}</label>
       <input
         type="text"

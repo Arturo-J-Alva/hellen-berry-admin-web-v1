@@ -14,7 +14,6 @@ export enum DressSize {
 export interface DressColor {
   color: string;
   image: string;
-  hide?: boolean;
 }
 
 export interface DressModel {
@@ -46,4 +45,5 @@ export interface DressColorData {
   id: string;
   color: string;
   file?: File;
+  image?: string;
 }

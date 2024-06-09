@@ -1,21 +1,35 @@
 import { FC, useEffect, useState } from "react";
-import { DressColorData } from "../../domain";
+import { DressColor, DressColorData } from "../../domain";
+import { generateUniqueId } from "../../utils";
 import { scrollToBottom } from "../../utils/scrollToBottom";
 import DressColorItem from "./DressColorItem";
 
 interface DressColorsGroupProps {
   exportDataItems?: (dataItems: DressColorData[]) => void;
   resetDataItems?: boolean;
+  dataForEdit?: DressColor[];
 }
 
-const generateUniqueId = () => new Date().getTime().toString();
 const initDataItem: DressColorData = { id: generateUniqueId(), color: "" };
 
 const DressColorsGroup: FC<DressColorsGroupProps> = ({
   exportDataItems,
   resetDataItems,
+  dataForEdit,
 }) => {
   const [dataItems, setDataItems] = useState<DressColorData[]>([initDataItem]);
+
+  useEffect(() => {
+    if (dataForEdit) {
+      setDataItems(
+        dataForEdit.map(({ color, image }, index) => ({
+          id: generateUniqueId(index),
+          color,
+          image,
+        }))
+      );
+    }
+  }, [dataForEdit]);
 
   const addItem = () => {
     setDataItems([...dataItems, { id: generateUniqueId(), color: "" }]);
@@ -48,15 +62,17 @@ const DressColorsGroup: FC<DressColorsGroupProps> = ({
 
   return (
     <div>
-      {dataItems.map(({ id, color, file }, index) => (
+      {dataItems.map(({ id, color, file, image }, index) => (
         <DressColorItem
           key={id}
+          color={color}
           addItem={addItem}
           index={index}
           deleteItem={deleteItem}
           lastIndex={lastIndex}
           setDataItems={setDataItems}
           dataWasFilled={!!color && !!file}
+          image={image}
         />
       ))}
     </div>

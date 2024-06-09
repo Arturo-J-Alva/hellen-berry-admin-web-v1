@@ -24,6 +24,7 @@ const App: FC = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/dress-list" element={<DressList />} />
                 <Route path="/dress-add" element={<DressAdd />} />
+                <Route path="/dress-edit" element={<DressAdd />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/logout" element={<Logout />} />
               </Routes>

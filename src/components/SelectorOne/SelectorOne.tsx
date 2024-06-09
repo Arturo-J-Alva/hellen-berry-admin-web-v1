@@ -22,6 +22,8 @@ const SelectorOne: FC<SelectorOneProps> = ({
   useEffect(() => {
     if (!value) {
       setIsOptionSelected(false);
+    }else{
+      setIsOptionSelected(true);
     }
   }, [value]);
 
