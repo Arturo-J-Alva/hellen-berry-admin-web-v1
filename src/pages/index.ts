@@ -1,4 +1,4 @@
-export * from './DressAdd';
+export * from './DressAddOrEdit';
 export * from './DressList';
 export * from './Home';
 export * from './Login';

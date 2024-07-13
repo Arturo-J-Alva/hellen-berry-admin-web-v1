@@ -37,7 +37,7 @@ const sizeList = [
 
 const notify = () => toast("Modelo registrado!", { position: "top-left" });
 
-const DressAdd: FC = () => {
+const DressAddOrEdit: FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const dressData = location.state?.dress as DressModel | undefined;
@@ -244,4 +244,4 @@ const DressAdd: FC = () => {
   );
 };
 
-export default DressAdd;
+export default DressAddOrEdit;

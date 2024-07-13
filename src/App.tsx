@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { PageLayout } from "./components";
-import { DressAdd, DressList, Home, Login, Logout, User } from "./pages";
+import { DressAddOrEdit, DressList, Home, Login, Logout, User } from "./pages";
 import globalStore from "./redux/store";
 
 // const Home = lazy(() => import("./pages/Home/Home"));
@@ -23,8 +23,8 @@ const App: FC = () => {
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/dress-list" element={<DressList />} />
-                <Route path="/dress-add" element={<DressAdd />} />
-                <Route path="/dress-edit" element={<DressAdd />} />
+                <Route path="/dress-add" element={<DressAddOrEdit />} />
+                <Route path="/dress-edit" element={<DressAddOrEdit />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/logout" element={<Logout />} />
               </Routes>
