@@ -13,7 +13,7 @@ export enum DressSize {
 
 export interface DressColor {
   color: string;
-  image: string;
+  image?: string;
 }
 
 export interface DressModel {
@@ -28,7 +28,7 @@ export interface DressModel {
   modifiedAt: string;
 }
 
-export interface DressColorInput extends Omit<DressColor, "image"> {
+export interface DressColorInput extends DressColor {
   file: File;
 }
 

@@ -123,6 +123,7 @@ const DressAdd: FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+
     const formData: DressInput = {
       model,
       type: dressType as DressType,
@@ -130,12 +131,14 @@ const DressAdd: FC = () => {
       price,
       isPopular: isPopular,
       hide,
-      colors: colorsData.map(({ color, file }) => ({
+      colors: colorsData.map(({ color, file, image }) => ({
         color,
         file,
+        image,
       })) as DressColorInput[],
     };
-    await postDress(formData);
+
+    isAddPage ? await postDress(formData) : await postDress(formData,"PUT");
 
     clearForm();
     notify();

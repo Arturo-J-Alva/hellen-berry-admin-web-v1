@@ -4,13 +4,16 @@ import { DressInput, DressInputBody, DressModel } from "../domain";
 const getExtension = (str: string) => str.slice(str.lastIndexOf("."));
 
 export const postDress = async (
-  dressInput: DressInput
+  dressInput: DressInput,
+  method: "POST" | "PUT" = "POST"
 ): Promise<DressModel[] | undefined> => {
   const { colors } = dressInput;
 
   const formData = new FormData();
 
-  colors.forEach(({ file, color }) => {
+  const colorsWithFiles = colors.filter(({ file }) => file);
+
+  colorsWithFiles.forEach(({ file, color }) => {
     formData.append(
       "files",
       file,
@@ -20,18 +23,21 @@ export const postDress = async (
 
   const data: DressInputBody = {
     ...dressInput,
-    colors: colors.map(({ color, hide }) => ({
+    colors: colors.map(({ color, image }) => ({
       color,
-      hide,
+      image,
     })),
   };
 
   formData.append("data", JSON.stringify(data));
 
-  const res = await fetch(`${baseUrl}/dresses`, {
-    method: "POST",
-    body: formData,
-  });
+  const res = await fetch(
+    `${baseUrl}/dresses`,
+    {
+      method,
+      body: formData,
+    }
+  );
 
   const json = (await res.json()) as DressModel[];
 
