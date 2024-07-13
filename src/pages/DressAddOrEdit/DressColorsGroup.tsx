@@ -71,7 +71,7 @@ const DressColorsGroup: FC<DressColorsGroupProps> = ({
           deleteItem={deleteItem}
           lastIndex={lastIndex}
           setDataItems={setDataItems}
-          dataWasFilled={!!color && !!file}
+          dataWasFilled={Boolean(color && (file||image))}
           image={image}
         />
       ))}

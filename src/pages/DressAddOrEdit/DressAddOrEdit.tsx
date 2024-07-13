@@ -18,6 +18,7 @@ import {
   DressType,
 } from "../../domain";
 import { postDress } from "../../services/postDress";
+import { putDress } from "../../services/putDress";
 import { generateUniqueId, stringToBoolean } from "../../utils";
 import { booleanToString } from "../../utils/booleanToString";
 import DressColorsGroup from "./DressColorsGroup";
@@ -35,7 +36,10 @@ const sizeList = [
   { value: "XL", label: "XL" },
 ];
 
-const notify = () => toast("Modelo registrado!", { position: "top-left" });
+const notify = (isAddPage: boolean) =>
+  toast(isAddPage ? "Modelo registrado!" : "Modelo Editado!", {
+    position: "top-left",
+  });
 
 const DressAddOrEdit: FC = () => {
   const location = useLocation();
@@ -138,10 +142,16 @@ const DressAddOrEdit: FC = () => {
       })) as DressColorInput[],
     };
 
-    isAddPage ? await postDress(formData) : await postDress(formData,"PUT");
+    if (isAddPage) {
+      await postDress(formData);
+      clearForm();
+    }
 
-    clearForm();
-    notify();
+    if (isEditPage) {
+      await putDress(formData);
+    }
+
+    notify(isAddPage);
   };
 
   return (
