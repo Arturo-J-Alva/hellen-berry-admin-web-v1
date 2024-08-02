@@ -35,6 +35,8 @@ export interface DressColorInput extends DressColor {
 export interface DressInput
   extends Omit<DressModel, "id" | "createdAt" | "modifiedAt" | "colors"> {
   colors: DressColorInput[];
+  currentModel?: string;
+  currentType?: DressType;
 }
 
 export interface DressInputBody extends Omit<DressInput, "colors"> {

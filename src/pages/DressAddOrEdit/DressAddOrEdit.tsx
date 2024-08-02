@@ -130,6 +130,8 @@ const DressAddOrEdit: FC = () => {
 
     const formData: DressInput = {
       model,
+      currentModel: dressData?.model || undefined,
+      currentType: dressData?.type || undefined,
       type: dressType as DressType,
       sizes: dressSize,
       price,

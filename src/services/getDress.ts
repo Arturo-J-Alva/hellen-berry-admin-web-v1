@@ -1,10 +1,6 @@
 import { baseUrl } from "../config/global";
 import { DressModel } from "../domain";
 
-export interface UploadFileResponse {
-  link: string;
-}
-
 export const getDress = async (): Promise<DressModel[] | undefined> => {
   const res = await fetch(`${baseUrl}/dresses`, {
     method: "GET",

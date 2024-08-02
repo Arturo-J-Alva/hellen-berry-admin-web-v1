@@ -13,8 +13,11 @@ import {
 } from "@nextui-org/react";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import { DeleteIcon, EditIcon, EyeIcon } from "../../assets/svg";
+import { ModalDialog } from "../../components";
 import { DressModel, DressType } from "../../domain";
+import { deleteDress } from "../../services/deleteDress";
 import { formtDate } from "../../services/formtDate";
 import { getDress } from "../../services/getDress";
 import { ColumnData, columns } from "./data";
@@ -23,6 +26,8 @@ const DressList: FC = () => {
   const [dresses, setDresses] = useState<DressModel[]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedDress, setSelectedDress] = useState<DressModel | null>(null);
   const runOnce = useRef(false);
   const rowsPerPage = 10;
 
@@ -122,7 +127,13 @@ const DressList: FC = () => {
                 </span>
               </Tooltip>
               <Tooltip color="danger" content="Eliminar modelo">
-                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <span
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                  onClick={() => {
+                    setOpenModal(true);
+                    setSelectedDress(address);
+                  }}
+                >
                   <DeleteIcon />
                 </span>
               </Tooltip>
@@ -135,47 +146,79 @@ const DressList: FC = () => {
     [navigate]
   );
 
+  const removeDress = async () => {
+    setOpenModal(false);
+    await deleteDress({
+      type: selectedDress?.type as string,
+      model: selectedDress?.model as string,
+    });
+    toast("Modelo eliminado!", {
+      position: "top-left",
+    });
+    
+    setDresses(
+      dresses.filter(
+        (dress) =>
+          !(
+            dress.type === selectedDress?.type &&
+            dress.model === selectedDress?.model
+          )
+      )
+    );
+  };
+
   return (
-    <Table
-      aria-label="Example table with custom cells"
-      bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination
-            isCompact
-            showControls
-            showShadow
-            color="secondary"
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
-      }
-    >
-      <TableHeader columns={columns}>
-        {(column: ColumnData) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        items={items}
-        loadingState={isLoading ? "loading" : "idle"}
-        loadingContent={<Spinner />}
+    <>
+      <Table
+        aria-label="Example table with custom cells"
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="secondary"
+              page={page}
+              total={pages}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        }
       >
-        {(item: DressModel) => (
-          <TableRow key={`${item.model}-${item.type}`}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey as string)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={columns}>
+          {(column: ColumnData) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          items={items}
+          loadingState={isLoading ? "loading" : "idle"}
+          loadingContent={<Spinner />}
+        >
+          {(item: DressModel) => (
+            <TableRow key={`${item.model}-${item.type}`}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey as string)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+
+      <ModalDialog
+        title={`Eliminar modelo ${selectedDress?.model} - ${selectedDress?.type}`}
+        message="¿Estás seguro de eliminar este modelo?"
+        isOpen={openModal}
+        setOpenModal={setOpenModal}
+        onConfirm={removeDress}
+      />
+      <ToastContainer />
+    </>
   );
 };
 
