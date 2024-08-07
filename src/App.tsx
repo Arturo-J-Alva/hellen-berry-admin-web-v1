@@ -34,6 +34,7 @@ const App: FC = () => {
       </Routes>
     </Router>
     </Provider>
+    {/* <LoadingPage /> */}
  </div>
   );
 };
