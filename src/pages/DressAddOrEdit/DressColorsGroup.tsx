@@ -10,14 +10,18 @@ interface DressColorsGroupProps {
   dataForEdit?: DressColor[];
 }
 
-const initDataItem: DressColorData = { id: generateUniqueId(), color: "" };
+const getInitDataItem = (): DressColorData => {
+  return { id: generateUniqueId(), color: "" };
+};
 
 const DressColorsGroup: FC<DressColorsGroupProps> = ({
   exportDataItems,
   resetDataItems,
   dataForEdit,
 }) => {
-  const [dataItems, setDataItems] = useState<DressColorData[]>([initDataItem]);
+  const [dataItems, setDataItems] = useState<DressColorData[]>([
+    getInitDataItem(),
+  ]);
 
   useEffect(() => {
     if (dataForEdit) {
@@ -51,7 +55,7 @@ const DressColorsGroup: FC<DressColorsGroupProps> = ({
 
   useEffect(() => {
     if (resetDataItems) {
-      setDataItems([initDataItem]);
+      setDataItems([getInitDataItem()]);
       const inputsFile =
         document.querySelectorAll<HTMLInputElement>("input[type=file]");
       inputsFile.forEach((input) => {
@@ -71,7 +75,7 @@ const DressColorsGroup: FC<DressColorsGroupProps> = ({
           deleteItem={deleteItem}
           lastIndex={lastIndex}
           setDataItems={setDataItems}
-          dataWasFilled={Boolean(color && (file||image))}
+          dataWasFilled={Boolean(color && (file || image))}
           image={image}
         />
       ))}
