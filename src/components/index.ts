@@ -1,10 +1,10 @@
 export * from './ButtonDefault';
 export * from './InputDefault';
 export * from './InputFile';
-export * from './LoadingPage';
 export * from './ModalDialog';
 export * from './PageLayout';
 export * from './SelectorMulti';
 export * from './SelectorOne';
+export * from './ServiceLoader';
 export * from './Sidebar';
 

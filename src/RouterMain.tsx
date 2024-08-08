@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { LoadingPage, PageLayout } from "./components";
+import { PageLayout, ServiceLoader } from "./components";
 import { DressAddOrEdit, DressList, Home, Login, Logout, User } from "./pages";
 import { AppStore } from "./redux/store";
 
@@ -10,7 +10,7 @@ const RouterMain: FC = () => {
 
   return (
     <>
-      {numberRequest > 0 && <LoadingPage />}
+      {numberRequest > 0 && <ServiceLoader />}
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
