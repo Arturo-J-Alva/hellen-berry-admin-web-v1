@@ -17,9 +17,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { DeleteIcon, EditIcon, EyeIcon } from "../../assets/svg";
 import { ModalDialog } from "../../components";
 import { DressModel, DressType } from "../../domain";
-import { deleteDress } from "../../services/deleteDress";
-import { formtDate } from "../../services/formtDate";
-import { getDress } from "../../services/getDress";
+import { MainServices } from "../../services";
+import { formtDate } from "../../utils/formtDate";
 import { ColumnData, columns } from "./data";
 
 const DressList: FC = () => {
@@ -44,7 +43,7 @@ const DressList: FC = () => {
   useEffect(() => {
     const getDressesList = async () => {
       setIsLoading(true);
-      const dressesModel = await getDress();
+      const dressesModel = await MainServices.getDresses();
       setIsLoading(false);
       setDresses(dressesModel as DressModel[]);
     };
@@ -148,14 +147,14 @@ const DressList: FC = () => {
 
   const removeDress = async () => {
     setOpenModal(false);
-    await deleteDress({
+    await MainServices.deleteDress({
       type: selectedDress?.type as string,
       model: selectedDress?.model as string,
     });
     toast("Modelo eliminado!", {
       position: "top-left",
     });
-    
+
     setDresses(
       dresses.filter(
         (dress) =>

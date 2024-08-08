@@ -49,3 +49,13 @@ export interface DressColorData {
   file?: File;
   image?: string;
 }
+
+export interface DressesResponse {
+  message: string;
+  dresses: DressModel[];
+}
+
+export interface DressResponse {
+  message: string;
+  dress: DressModel;
+}

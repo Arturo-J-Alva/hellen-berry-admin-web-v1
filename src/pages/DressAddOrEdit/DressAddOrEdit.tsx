@@ -17,8 +17,7 @@ import {
   DressSize,
   DressType,
 } from "../../domain";
-import { postDress } from "../../services/postDress";
-import { putDress } from "../../services/putDress";
+import { MainServices } from "../../services";
 import { generateUniqueId, stringToBoolean } from "../../utils";
 import { booleanToString } from "../../utils/booleanToString";
 import DressColorsGroup from "./DressColorsGroup";
@@ -145,12 +144,12 @@ const DressAddOrEdit: FC = () => {
     };
 
     if (isAddPage) {
-      await postDress(formData);
+      await MainServices.postDress(formData);
       clearForm();
     }
 
     if (isEditPage) {
-      await putDress(formData);
+      await MainServices.putDress(formData);
     }
 
     notify(isAddPage);
