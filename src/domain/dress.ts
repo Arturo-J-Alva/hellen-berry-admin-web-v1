@@ -11,7 +11,19 @@ export enum DressSize {
   XL = "XL",
 }
 
-export interface DressColor {
+export enum DressColor{
+  RED = "RED",
+  BLUE = "BLUE",
+  SKYBLUE = "SKYBLUE",
+  GREEN = "GREEN",
+  YELLOW = "YELLOW",
+  BLACK = "BLACK",
+  WHITE = "WHITE",
+  PINK = "PINK",
+  OTHER = "OTHER",
+}
+
+export interface DressImage {
   id: string;
   color: string;
   image?: string;
@@ -22,29 +34,29 @@ export interface DressModel {
   type: DressType;
   createdAt: string;
   sizes: DressSize[];
-  colors: DressColor[];
+  dressImages: DressImage[];
   isPopular: boolean;
   hide: boolean;
   price: string;
   modifiedAt: string;
 }
 
-export interface DressColorInput extends DressColor {
+export interface DressImageInput extends DressImage {
   file: File;
 }
 
 export interface DressInput
-  extends Omit<DressModel, "id" | "createdAt" | "modifiedAt" | "colors"> {
-  colors: DressColorInput[];
+  extends Omit<DressModel, "id" | "createdAt" | "modifiedAt" | "dressImages"> {
+  dressImages: DressImageInput[];
   currentModel?: string;
   currentType?: DressType;
 }
 
-export interface DressInputBody extends Omit<DressInput, "colors"> {
-  colors: Omit<DressColorInput, "file">[];
+export interface DressInputBody extends Omit<DressInput, "dressImages"> {
+  dressImages: Omit<DressImageInput, "file">[];
 }
 
-export interface DressColorData {
+export interface DressImageData {
   id: string;
   color: string;
   file?: File;

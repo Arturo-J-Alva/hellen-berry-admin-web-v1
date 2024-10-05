@@ -66,10 +66,10 @@ const DressList: FC = () => {
                 <h3 className=" font-bold">{address.model}</h3>
                 <p>{address.type === DressType.WOMEN ? "MUJER" : "NIÑA"}</p>
               </div>
-              {address.colors.map((color) => (
+              {address.dressImages.map((dressImage) => (
                 <User
-                  key={color.color}
-                  avatarProps={{ radius: "none", src: color.image }}
+                  key={dressImage.color}
+                  avatarProps={{ radius: "none", src: dressImage.image }}
                   description=""
                   name=""
                 />

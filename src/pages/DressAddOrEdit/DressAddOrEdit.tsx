@@ -10,12 +10,12 @@ import {
 } from "../../components";
 import {
   Confirmation,
-  DressColorData,
-  DressColorInput,
+  DressImageData,
+  DressImageInput,
   DressInput,
   DressModel,
   DressSize,
-  DressType
+  DressType,
 } from "../../domain";
 import { MainServices } from "../../services";
 import { generateUniqueId, stringToBoolean } from "../../utils";
@@ -23,8 +23,8 @@ import { booleanToString } from "../../utils/booleanToString";
 import DressColorsGroup from "./DressColorsGroup";
 
 const dressList = [
-  { value: "GIRLS", label: "Niña" },
-  { value: "WOMEN", label: "Mujer" },
+  { value: DressType.GIRLS, label: "Niña" },
+  { value: DressType.WOMEN, label: "Mujer" },
 ];
 
 const sizeList = [
@@ -49,16 +49,16 @@ const DressAddOrEdit: FC = () => {
 
   const [dressType, setDressType] = useState("");
   const [model, setModel] = useState("");
-  const [dressSize, setDressSize] = useState<DressSize[]>([]);
+  const [sizesSelected, setSizesSelected] = useState<DressSize[]>([]);
   const [price, setPrice] = useState("");
-  const [colorsData, setColorsData] = useState<DressColorData[]>([]);
+  const [dressImagesData, setDressImagesData] = useState<DressImageData[]>([]);
   const [resetColorsData, setResetColorsData] = useState(false);
   const [isPopular, setIsPopular] = useState(false);
   const [hide, setHide] = useState(false);
   const [resetDressSize, setResetDressSize] = useState(false);
 
   const goResetDressSize = () => {
-    setDressSize([]);
+    setSizesSelected([]);
     setResetDressSize(true);
     setTimeout(() => {
       setResetDressSize(false);
@@ -66,7 +66,7 @@ const DressAddOrEdit: FC = () => {
   };
 
   const goResetColorsData = () => {
-    setColorsData([]);
+    setDressImagesData([]);
     setResetColorsData(true);
     setTimeout(() => {
       setResetColorsData(false);
@@ -87,10 +87,10 @@ const DressAddOrEdit: FC = () => {
     if (dressData) {
       setDressType(dressData.type);
       setModel(dressData.model);
-      setDressSize(dressData.sizes);
+      setSizesSelected(dressData.sizes);
       setPrice(dressData.price);
-      setColorsData(
-        dressData.colors.map(({ color, image, id }, index) => ({
+      setDressImagesData(
+        dressData.dressImages.map(({ color, image, id }, index) => ({
           id: id || generateUniqueId(index),
           color,
           image,
@@ -113,15 +113,15 @@ const DressAddOrEdit: FC = () => {
   const isEnabled = Boolean(
     dressType &&
       model &&
-      dressSize.length &&
+      sizesSelected.length &&
       price &&
-      colorsData
+      dressImagesData
         .map(({ color, file, image }) => color && ((!file && image) || file))
         .every(Boolean)
   );
 
   const handledSelectorMulti = useCallback((options: DressSize[]) => {
-    setDressSize(options);
+    setSizesSelected(options);
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -132,11 +132,11 @@ const DressAddOrEdit: FC = () => {
       currentModel: dressData?.model || undefined,
       currentType: dressData?.type || undefined,
       type: dressType as DressType,
-      sizes: dressSize,
+      sizes: sizesSelected,
       price,
       isPopular: isPopular,
       hide,
-      colors: colorsData as DressColorInput[],
+      dressImages: dressImagesData as DressImageInput[],
     };
 
     if (isAddPage) {
@@ -231,9 +231,9 @@ const DressAddOrEdit: FC = () => {
             </div>
           </div>
           <DressColorsGroup
-            exportDataItems={(items) => setColorsData(items)}
+            exportDataItems={(items) => setDressImagesData(items)}
             resetDataItems={resetColorsData}
-            dataForEdit={dressData?.colors}
+            dataForEdit={dressData?.dressImages}
           />
         </div>
         <div className="text-center mt-6">

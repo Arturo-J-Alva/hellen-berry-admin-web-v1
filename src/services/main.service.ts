@@ -18,13 +18,13 @@ const getDresses = async (): Promise<DressModel[]> => {
 const getExtension = (str: string) => str.slice(str.lastIndexOf("."));
 
 const logicPostPutDress = (dressInput: DressInput): FormData => {
-  const { colors } = dressInput;
+  const { dressImages } = dressInput;
 
   const formData = new FormData();
 
-  const colorsWithFiles = colors.filter(({ file }) => file);
+  const dressImagesWithFiles = dressImages.filter(({ file }) => file);
 
-  colorsWithFiles.forEach(({ file, color }) => {
+  dressImagesWithFiles.forEach(({ file, color }) => {
     formData.append(
       "files",
       file,
@@ -34,7 +34,7 @@ const logicPostPutDress = (dressInput: DressInput): FormData => {
 
   const data: DressInputBody = {
     ...dressInput,
-    colors: colors.map(({ id,color, image }) => ({
+    dressImages: dressImages.map(({ id,color, image }) => ({
       id,
       color,
       image,

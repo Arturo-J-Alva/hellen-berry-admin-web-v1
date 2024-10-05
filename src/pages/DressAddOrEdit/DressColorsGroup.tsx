@@ -1,16 +1,16 @@
 import { FC, useEffect, useState } from "react";
-import { DressColor, DressColorData } from "../../domain";
+import { DressImage, DressImageData } from "../../domain";
 import { generateUniqueId } from "../../utils";
 import { scrollToBottom } from "../../utils/scrollToBottom";
 import DressColorItem from "./DressColorItem";
 
 interface DressColorsGroupProps {
-  exportDataItems?: (dataItems: DressColorData[]) => void;
+  exportDataItems?: (dataItems: DressImageData[]) => void;
   resetDataItems?: boolean;
-  dataForEdit?: DressColor[];
+  dataForEdit?: DressImage[];
 }
 
-const getInitDataItem = (): DressColorData => {
+const getInitDataItem = (): DressImageData => {
   return { id: generateUniqueId(), color: "" };
 };
 
@@ -19,7 +19,7 @@ const DressColorsGroup: FC<DressColorsGroupProps> = ({
   resetDataItems,
   dataForEdit,
 }) => {
-  const [dataItems, setDataItems] = useState<DressColorData[]>([
+  const [dataItems, setDataItems] = useState<DressImageData[]>([
     getInitDataItem(),
   ]);
 

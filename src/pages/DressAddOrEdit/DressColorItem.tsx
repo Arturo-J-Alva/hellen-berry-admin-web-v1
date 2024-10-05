@@ -1,8 +1,8 @@
 import { Image } from "@nextui-org/react";
 import { Dispatch, FC, useEffect, useState } from "react";
 import { AddCircleIcon, TrashIcon } from "../../assets/svg";
-import { InputDefault, InputFile } from "../../components";
-import { DressColorData } from "../../domain";
+import { InputFile, SelectorOne } from "../../components";
+import { DressColor, DressImageData } from "../../domain";
 
 interface DressColorProps {
   index: number;
@@ -10,12 +10,24 @@ interface DressColorProps {
   addItem: () => void;
   deleteItem: (index: number) => void;
   lastIndex: number;
-  setDataItems: Dispatch<React.SetStateAction<DressColorData[]>>;
+  setDataItems: Dispatch<React.SetStateAction<DressImageData[]>>;
   dataWasFilled: boolean;
   image?: string;
 }
 
 const classesInitial = "opacity-0 -translate-y-10";
+
+const colorList = [
+  { value: DressColor.RED, label: "Rojo" },
+  { value: DressColor.BLUE, label: "Azul" },
+  { value: DressColor.SKYBLUE, label: "Celeste" },
+  { value: DressColor.GREEN, label: "Verde" },
+  { value: DressColor.YELLOW, label: "Amarillo" },
+  { value: DressColor.BLACK, label: "Negro" },
+  { value: DressColor.WHITE, label: "Blanco" },
+  { value: DressColor.PINK, label: "Rosado" },
+  { value: DressColor.OTHER, label: "Otro" },
+];
 
 const DressColorItem: FC<DressColorProps> = ({
   addItem,
@@ -53,20 +65,30 @@ const DressColorItem: FC<DressColorProps> = ({
     >
       <div className=" h-0.5 bg-slate-500" />
 
-      <InputDefault
+      <h2 className=" text-xl font-bold text-black dark:text-white text-center">
+        IMAGEN {numberItem}
+      </h2>
+
+      <SelectorOne
         label={`Color ${numberItem}`}
-        value={color}
-        placeholder="Escribe el color del vestido"
-        onChange={(e) => {
+        placeholder="Selecciona un color"
+        optionsCombo={colorList}
+        value={
+          color === ""
+            ? color
+            : colorList.find((item) => item.value === color)?.value ||
+              DressColor.OTHER
+        }
+        onChange={(optionColor) =>
           setDataItems((prev) => {
             const newDataItems = [...prev];
-            newDataItems[index].color = e.target.value;
+            newDataItems[index].color = optionColor;
             return newDataItems;
-          });
-        }}
+          })
+        }
       />
 
-      {image  && (
+      {image && (
         <>
           <label className="mb-3 block text-black dark:text-white">{`Imagen ${numberItem}`}</label>
           <div className="flex flex-row justify-center">
@@ -79,7 +101,7 @@ const DressColorItem: FC<DressColorProps> = ({
         exportFile={(file) => {
           setDataItems((prev) => {
             const newDataItems = [...prev];
-            newDataItems[index].image = '';
+            newDataItems[index].image = "";
             newDataItems[index].file = file;
             return newDataItems;
           });
