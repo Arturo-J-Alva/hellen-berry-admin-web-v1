@@ -12,6 +12,7 @@ export enum DressSize {
 }
 
 export interface DressColor {
+  id: string;
   color: string;
   image?: string;
 }

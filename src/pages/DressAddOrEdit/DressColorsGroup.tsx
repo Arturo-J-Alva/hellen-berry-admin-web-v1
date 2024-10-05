@@ -26,8 +26,8 @@ const DressColorsGroup: FC<DressColorsGroupProps> = ({
   useEffect(() => {
     if (dataForEdit) {
       setDataItems(
-        dataForEdit.map(({ color, image }, index) => ({
-          id: generateUniqueId(index),
+        dataForEdit.map(({ color, image, id }, index) => ({
+          id: id || generateUniqueId(index),
           color,
           image,
         }))

@@ -1,9 +1,9 @@
 import {
-    DressInput,
-    DressInputBody,
-    DressModel,
-    DressResponse,
-    DressesResponse,
+  DressInput,
+  DressInputBody,
+  DressModel,
+  DressResponse,
+  DressesResponse,
 } from "../domain";
 import { apiMain } from "./main.instance";
 
@@ -34,7 +34,8 @@ const logicPostPutDress = (dressInput: DressInput): FormData => {
 
   const data: DressInputBody = {
     ...dressInput,
-    colors: colors.map(({ color, image }) => ({
+    colors: colors.map(({ id,color, image }) => ({
+      id,
       color,
       image,
     })),

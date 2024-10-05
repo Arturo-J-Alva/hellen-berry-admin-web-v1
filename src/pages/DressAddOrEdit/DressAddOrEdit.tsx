@@ -15,7 +15,7 @@ import {
   DressInput,
   DressModel,
   DressSize,
-  DressType,
+  DressType
 } from "../../domain";
 import { MainServices } from "../../services";
 import { generateUniqueId, stringToBoolean } from "../../utils";
@@ -90,8 +90,8 @@ const DressAddOrEdit: FC = () => {
       setDressSize(dressData.sizes);
       setPrice(dressData.price);
       setColorsData(
-        dressData.colors.map(({ color, image }, index) => ({
-          id: generateUniqueId(index),
+        dressData.colors.map(({ color, image, id }, index) => ({
+          id: id || generateUniqueId(index),
           color,
           image,
         }))
@@ -136,11 +136,7 @@ const DressAddOrEdit: FC = () => {
       price,
       isPopular: isPopular,
       hide,
-      colors: colorsData.map(({ color, file, image }) => ({
-        color,
-        file,
-        image,
-      })) as DressColorInput[],
+      colors: colorsData as DressColorInput[],
     };
 
     if (isAddPage) {
