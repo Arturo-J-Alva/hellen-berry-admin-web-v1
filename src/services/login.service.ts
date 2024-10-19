@@ -8,7 +8,13 @@ const postAuthentication = async (
     await apiLogin.post("/auth-user", body);
   };
 
+  const postLogout = async (
+  ): Promise<void> => {
+    await apiLogin.post("/logout");
+  };
+
 export const LoginServices = {
     postAuthentication,
+    postLogout
   };
   

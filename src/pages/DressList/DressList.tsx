@@ -68,7 +68,7 @@ const DressList: FC = () => {
               </div>
               {address.dressImages.map((dressImage) => (
                 <User
-                  key={dressImage.color}
+                  key={dressImage.id}
                   avatarProps={{ radius: "none", src: dressImage.image }}
                   description=""
                   name=""
