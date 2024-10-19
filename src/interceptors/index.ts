@@ -1,8 +1,8 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { endRequest, startRequest } from '../redux/states/api';
 import globalStore from '../redux/store';
 
-export const onRequest = (request: AxiosRequestConfig): AxiosRequestConfig => {
+export const onRequest = (request: InternalAxiosRequestConfig) => {
   globalStore.dispatch(startRequest());
   return request;
 };
