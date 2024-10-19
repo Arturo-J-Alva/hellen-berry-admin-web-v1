@@ -1,11 +1,13 @@
 import { FC, FormEvent, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo-hb.png";
+import { loggedIn } from "../../redux/states/login";
 import { LoginServices } from "../../services";
 
 const Login: FC = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("arturo.alva@hellen-berry.com");
   const [password, setPassword] = useState("pintonamau");
 
@@ -14,7 +16,9 @@ const Login: FC = () => {
   ): Promise<void> => {
     event.preventDefault();
     await LoginServices.postAuthentication(email, password);
+    dispatch(loggedIn())
     navigate("/home");
+    localStorage.setItem("isLogged", "true");
   };
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">

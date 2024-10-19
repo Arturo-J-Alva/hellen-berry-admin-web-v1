@@ -1,12 +1,14 @@
 import { FC, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loggedOut } from "../../redux/states/login";
 
 const Logout: FC = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
-    navigate("/");
-  }, [navigate])
-  
+    dispatch(loggedOut());
+    localStorage.setItem("isLogged", "false");
+  }, [dispatch]);
+
   return <div>Logout!</div>;
 };
 
