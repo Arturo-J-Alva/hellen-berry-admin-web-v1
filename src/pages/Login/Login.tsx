@@ -1,13 +1,19 @@
-import { FC, MouseEvent } from "react";
+import { FC, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../images/logo/logo-hb.png";
+import { LoginServices } from "../../services";
 
 const Login: FC = () => {
   const navigate = useNavigate();
-  const handleSubmit = (
-    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-  ): void => {
+
+  const [email, setEmail] = useState("arturo.alva@hellen-berry.com");
+  const [password, setPassword] = useState("pintonamau");
+
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
+    await LoginServices.postAuthentication(email, password);
     navigate("/home");
   };
   return (
@@ -40,7 +46,7 @@ const Login: FC = () => {
                     ADMINISTRADOR
                   </h2>
 
-                  <form>
+                  <form onSubmit={handleSubmit} >
                     <div className="mb-4">
                       <label className="mb-2.5 block font-medium text-black dark:text-white">
                         Email
@@ -48,8 +54,11 @@ const Login: FC = () => {
                       <div className="relative">
                         <input
                           type="email"
+                          value={email}
                           placeholder="Ingresa tu correo"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
                         />
 
                         <span className="absolute right-4 top-4">
@@ -79,8 +88,11 @@ const Login: FC = () => {
                       <div className="relative">
                         <input
                           type="password"
+                          value={password}
                           placeholder="Ingresa tu contraseña"
                           className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
                         />
 
                         <span className="absolute right-4 top-4">
@@ -109,7 +121,7 @@ const Login: FC = () => {
 
                     <div className="mb-5">
                       <button
-                        onClick={handleSubmit}
+                        type="submit"
                         className="font-bold w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                       >
                         INGRESAR
