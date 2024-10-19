@@ -82,5 +82,4 @@ export const MainServices = {
   postDress,
   putDress,
   deleteDress,
-  postAuthentication
 };
