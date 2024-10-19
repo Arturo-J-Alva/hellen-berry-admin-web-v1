@@ -7,6 +7,9 @@ import {
 } from "../domain";
 import { apiMain } from "./main.instance";
 
+const getExtension = (str: string) => str.slice(str.lastIndexOf("."));
+
+
 const getDresses = async (): Promise<DressModel[]> => {
   const res = await apiMain.get<DressesResponse>("/dresses");
   const orderDressesByCreatedAt = res.data.dresses.sort(
@@ -14,8 +17,6 @@ const getDresses = async (): Promise<DressModel[]> => {
   );
   return orderDressesByCreatedAt;
 };
-
-const getExtension = (str: string) => str.slice(str.lastIndexOf("."));
 
 const logicPostPutDress = (dressInput: DressInput): FormData => {
   const { dressImages } = dressInput;
@@ -34,7 +35,7 @@ const logicPostPutDress = (dressInput: DressInput): FormData => {
 
   const data: DressInputBody = {
     ...dressInput,
-    dressImages: dressImages.map(({ id,color, image }) => ({
+    dressImages: dressImages.map(({ id, color, image }) => ({
       id,
       color,
       image,
@@ -81,4 +82,5 @@ export const MainServices = {
   postDress,
   putDress,
   deleteDress,
+  postAuthentication
 };

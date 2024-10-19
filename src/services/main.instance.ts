@@ -11,6 +11,8 @@ export const apiMain = axios.create({
   baseURL: baseUrl
 });
 
+apiMain.defaults.withCredentials = true;
+
 apiMain.interceptors.request.use(onRequest, onRequestError);
 
 apiMain.interceptors.response.use(onResponse, onResponseError);
