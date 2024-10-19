@@ -30,9 +30,6 @@ export const onResponseError = (
 export const onRequestMain = (
   request: AxiosRequestConfig,
 ): AxiosRequestConfig => {
-  if (request.headers) {
-    request.headers.Authorization = globalStore.getState().login.token;
-  }
   globalStore.dispatch(startRequest());
   return request;
 };

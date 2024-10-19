@@ -5,7 +5,6 @@ export const UserEmptyState: LoginState = {
   personalData: null,
   isLogged: null,
   idUser: "",
-  token: "",
 };
 
 export const userSlice = createSlice({
@@ -31,10 +30,13 @@ export const userSlice = createSlice({
       ...state,
       idUser: action.payload,
     }),
-    updateToken: (state, action: PayloadAction<string>) => ({
+    loggedIn: (state) => ({
       ...state,
-      token: action.payload,
       isLogged: true,
+    }),
+    loggedOut: (state) => ({
+      ...state,
+      isLogged: false,
     }),
   },
 });
@@ -44,7 +46,8 @@ export const {
   modifyUser,
   resetUserState,
   updateIdUser,
-  updateToken,
+  loggedIn,
+  loggedOut
 } = userSlice.actions;
 
 export default userSlice.reducer;

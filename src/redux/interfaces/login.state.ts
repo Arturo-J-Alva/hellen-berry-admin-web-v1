@@ -2,7 +2,6 @@ export interface LoginState {
   personalData: PersonalData | null;
   isLogged: boolean | null;
   idUser: string;
-  token: string;
 }
 
 export interface PersonalData {
