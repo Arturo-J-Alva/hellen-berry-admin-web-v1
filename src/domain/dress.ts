@@ -11,6 +11,12 @@ export enum DressSize {
   XL = "XL",
 }
 
+export interface ColorOption {
+  value: DressColor;
+  label: string;
+  code?: string;
+}
+
 export enum DressColor{
   RED = "RED",
   BLUE = "BLUE",
@@ -19,7 +25,14 @@ export enum DressColor{
   YELLOW = "YELLOW",
   BLACK = "BLACK",
   WHITE = "WHITE",
-  PINK = "PINK",
+  PINK_LIGHT = "PINK_LIGHT",
+  PINK_BUBBLEGUM ='PINK_BUBBLEGUM',
+  PINK_PALE = "PINK_PALE",
+  NUDE = "NUDE",
+  FUCHSIA = "FUCHSIA",
+  LILAC = "LILAC",
+  GREY = "GREY",
+  PURPLE = "PURPLE",
   OTHER = "OTHER",
 }
 

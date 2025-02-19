@@ -2,7 +2,7 @@ import { Image } from "@nextui-org/react";
 import { Dispatch, FC, useEffect, useState } from "react";
 import { AddCircleIcon, TrashIcon } from "../../assets/svg";
 import { InputFile, SelectorOne } from "../../components";
-import { DressColor, DressImageData } from "../../domain";
+import { ColorOption, DressColor, DressImageData } from "../../domain";
 
 interface DressColorProps {
   index: number;
@@ -17,16 +17,23 @@ interface DressColorProps {
 
 const classesInitial = "opacity-0 -translate-y-10";
 
-const colorList = [
-  { value: DressColor.RED, label: "Rojo" },
-  { value: DressColor.BLUE, label: "Azul" },
-  { value: DressColor.SKYBLUE, label: "Celeste" },
-  { value: DressColor.GREEN, label: "Verde" },
-  { value: DressColor.YELLOW, label: "Amarillo" },
-  { value: DressColor.BLACK, label: "Negro" },
-  { value: DressColor.WHITE, label: "Blanco" },
-  { value: DressColor.PINK, label: "Rosado" },
-  { value: DressColor.OTHER, label: "Otro" },
+const colorList: ColorOption[] = [
+  { value: DressColor.WHITE, label: "Blanco", code: "#FEFEFA" },
+  { value: DressColor.BLACK, label: "Negro", code: "#2e2e2e" },
+  { value: DressColor.SKYBLUE, label: "Celeste", code: "#87CEEB" },
+  { value: DressColor.FUCHSIA, label: "Fuxia", code: "#F5347F" },
+  { value: DressColor.PINK_BUBBLEGUM, label: "Chicle", code: "#FD73A7" },
+  { value: DressColor.PINK_PALE, label: "Palo rosa", code: "#F99DBC" },
+  { value: DressColor.PINK_LIGHT, label: "Rosa bebé", code: "#FEC2D6" },
+  { value: DressColor.NUDE, label: "Nude", code: "#FDD9E5" },
+  { value: DressColor.RED, label: "Rojo", code: "#FF0000" },
+  { value: DressColor.BLUE, label: "Azul", code: "#0000FF" },
+  { value: DressColor.GREEN, label: "Verde", code: "#008000" },
+  { value: DressColor.YELLOW, label: "Amarillo", code: "#FFFF00" },
+  { value: DressColor.LILAC, label: "Lila", code: "#B57EDC" },
+  { value: DressColor.PURPLE, label: "Morado", code: "#A020F0" },
+  { value: DressColor.GREY, label: "Gris", code: "#96989A" },
+  { value: DressColor.OTHER, label: "Otro", code: "" },
 ];
 
 const DressColorItem: FC<DressColorProps> = ({
