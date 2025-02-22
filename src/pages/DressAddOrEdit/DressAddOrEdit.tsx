@@ -7,6 +7,7 @@ import {
   InputDefault,
   SelectorMulti,
   SelectorOne,
+  TextArea,
 } from "../../components";
 import {
   Confirmation,
@@ -48,6 +49,7 @@ const DressAddOrEdit: FC = () => {
   const isAddPage = pathname === "/dress-add";
 
   const [dressType, setDressType] = useState("");
+  const [description, setDescription] = useState("");
   const [model, setModel] = useState("");
   const [sizesSelected, setSizesSelected] = useState<DressSize[]>([]);
   const [price, setPrice] = useState("");
@@ -75,6 +77,7 @@ const DressAddOrEdit: FC = () => {
 
   const clearForm = useCallback(() => {
     setDressType("");
+    setDescription("");
     setModel("");
     goResetDressSize();
     setPrice("");
@@ -86,6 +89,7 @@ const DressAddOrEdit: FC = () => {
   const fillInitialForm = useCallback(() => {
     if (dressData) {
       setDressType(dressData.type);
+      setDescription(dressData.description || "");
       setModel(dressData.model);
       setSizesSelected(dressData.sizes);
       setPrice(dressData.price);
@@ -129,6 +133,7 @@ const DressAddOrEdit: FC = () => {
 
     const formData: DressInput = {
       model,
+      description: description || undefined,
       currentModel: dressData?.model || undefined,
       currentType: dressData?.type || undefined,
       type: dressType as DressType,
@@ -162,6 +167,12 @@ const DressAddOrEdit: FC = () => {
               placeholder="Escribe el nombre del vestido"
               onChange={(e) => setModel(e.target.value)}
               value={model}
+            />
+
+            <TextArea
+              label="Descripción"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
             />
 
             <SelectorOne

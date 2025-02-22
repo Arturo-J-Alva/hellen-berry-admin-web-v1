@@ -7,4 +7,5 @@ export * from './SelectorMulti';
 export * from './SelectorOne';
 export * from './ServiceLoader';
 export * from './Sidebar';
+export * from './TextArea';
 

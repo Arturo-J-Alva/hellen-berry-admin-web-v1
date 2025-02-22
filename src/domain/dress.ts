@@ -52,6 +52,7 @@ export interface DressModel {
   hide: boolean;
   price: string;
   modifiedAt: string;
+  description?: string;
 }
 
 export interface DressImageInput extends DressImage {
@@ -63,6 +64,7 @@ export interface DressInput
   dressImages: DressImageInput[];
   currentModel?: string;
   currentType?: DressType;
+  description?: string;
 }
 
 export interface DressInputBody extends Omit<DressInput, "dressImages"> {
