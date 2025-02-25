@@ -8,8 +8,8 @@ import { LoginServices } from "../../services";
 const Login: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("arturo.alva@hellen-berry.com");
-  const [password, setPassword] = useState("pintonamau");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement>
