@@ -12,12 +12,14 @@ import {
   User,
 } from "@nextui-org/react";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FaInfoCircle, FaSync } from "react-icons/fa"; // Import the icon
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { DeleteIcon, EditIcon, EyeIcon } from "../../assets/svg";
-import { ModalDialog } from "../../components";
+import { ButtonDefault, ModalDialog } from "../../components";
 import { DressModel, DressType } from "../../domain";
 import { MainServices } from "../../services";
+import { PublicWebServices } from "../../services/publicweb.service";
 import { formtDate } from "../../utils/formtDate";
 import { ColumnData, columns } from "./data";
 
@@ -166,6 +168,15 @@ const DressList: FC = () => {
     );
   };
 
+  const updatePublicWeb = async () => {
+    setIsLoading(true);
+    await PublicWebServices.postUpdatePublicWeb();
+    setIsLoading(false);
+    toast("Web pública actualizada!", {
+      position: "top-left",
+    });
+  }
+
   return (
     <>
       <Table
@@ -209,6 +220,22 @@ const DressList: FC = () => {
         </TableBody>
       </Table>
 
+      <div className="mt-4 flex flex-col items-center">
+        <div className="flex items-center mb-2">
+          <FaInfoCircle className="mr-2 text-blue-500" />
+          <p className="text-gray-600">
+            Presione el botón para forzar la actualización de la <strong>web pública</strong> con los últimos cambios.
+          </p>
+        </div>
+        <ButtonDefault
+          className="w-64 bg-blue-800"
+          onClick={updatePublicWeb}
+        >
+          <FaSync className="mr-2" />
+          Forzar Actualización
+        </ButtonDefault>
+      </div>
+
       <ModalDialog
         title={`Eliminar modelo ${selectedDress?.model} - ${selectedDress?.type}`}
         message="¿Estás seguro de eliminar este modelo?"
@@ -217,6 +244,7 @@ const DressList: FC = () => {
         onConfirm={removeDress}
       />
       <ToastContainer />
+
     </>
   );
 };
