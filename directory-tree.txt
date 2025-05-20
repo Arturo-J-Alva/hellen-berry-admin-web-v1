@@ -1,0 +1,132 @@
+.
+|-- README.md
+|-- directory-tree.txt
+|-- index.html
+|-- package-lock.json
+|-- package.json
+|-- postcss.config.js
+|-- public
+|   `-- vite.svg
+|-- src
+|   |-- App.css
+|   |-- App.tsx
+|   |-- RouterMain.tsx
+|   |-- assets
+|   |   |-- react.svg
+|   |   `-- svg
+|   |       |-- AddCircleIcon.tsx
+|   |       |-- DeleteIcon.tsx
+|   |       |-- EditIcon.tsx
+|   |       |-- EyeIcon.tsx
+|   |       |-- TrashIcon.tsx
+|   |       `-- index.ts
+|   |-- components
+|   |   |-- ButtonDefault
+|   |   |   |-- ButtonDefault.tsx
+|   |   |   `-- index.ts
+|   |   |-- InputDefault
+|   |   |   |-- InputDefault.tsx
+|   |   |   `-- index.ts
+|   |   |-- InputFile
+|   |   |   |-- InputFile.tsx
+|   |   |   `-- index.ts
+|   |   |-- ModalDialog
+|   |   |   |-- ModalDialog.tsx
+|   |   |   `-- index.ts
+|   |   |-- PageLayout
+|   |   |   |-- PageLayout.tsx
+|   |   |   `-- index.ts
+|   |   |-- SelectorMulti
+|   |   |   |-- SelectorMulti.tsx
+|   |   |   `-- index.ts
+|   |   |-- SelectorOne
+|   |   |   |-- SelectorOne.tsx
+|   |   |   `-- index.ts
+|   |   |-- ServiceLoader
+|   |   |   |-- ServiceLoader.tsx
+|   |   |   `-- index.ts
+|   |   |-- Sidebar
+|   |   |   |-- Sidebar.tsx
+|   |   |   |-- SidebarLinkGroup.tsx
+|   |   |   `-- index.ts
+|   |   |-- TextArea
+|   |   |   |-- TextArea.tsx
+|   |   |   `-- index.ts
+|   |   `-- index.ts
+|   |-- config
+|   |   `-- global.ts
+|   |-- domain
+|   |   |-- confirmation.ts
+|   |   |-- dress.ts
+|   |   `-- index.ts
+|   |-- images
+|   |   |-- logo
+|   |   |   |-- logo-dark.svg
+|   |   |   |-- logo-hb.png
+|   |   |   `-- logo.svg
+|   |   `-- svg
+|   |       `-- dog.svg
+|   |-- index.css
+|   |-- interceptors
+|   |   `-- index.ts
+|   |-- main.tsx
+|   |-- pages
+|   |   |-- DressAddOrEdit
+|   |   |   |-- DressAddOrEdit.tsx
+|   |   |   |-- DressColorItem.tsx
+|   |   |   |-- DressColorsGroup.tsx
+|   |   |   `-- index.ts
+|   |   |-- DressList
+|   |   |   |-- DressList.tsx
+|   |   |   |-- data.ts
+|   |   |   `-- index.ts
+|   |   |-- Home
+|   |   |   |-- Home.tsx
+|   |   |   `-- index.ts
+|   |   |-- Login
+|   |   |   |-- Login.tsx
+|   |   |   `-- index.ts
+|   |   |-- Logout
+|   |   |   |-- Logout.tsx
+|   |   |   `-- index.ts
+|   |   |-- Mes30
+|   |   |-- User
+|   |   |   |-- User.tsx
+|   |   |   `-- index.ts
+|   |   `-- index.ts
+|   |-- react-app-env.d.ts
+|   |-- redux
+|   |   |-- actions
+|   |   |   `-- login.action.ts
+|   |   |-- interfaces
+|   |   |   |-- api.state.ts
+|   |   |   |-- index.ts
+|   |   |   `-- login.state.ts
+|   |   |-- states
+|   |   |   |-- api.ts
+|   |   |   |-- index.ts
+|   |   |   `-- login.ts
+|   |   `-- store.ts
+|   |-- services
+|   |   |-- index.ts
+|   |   |-- login.instance.ts
+|   |   |-- login.service.ts
+|   |   |-- main.instance.ts
+|   |   `-- main.service.ts
+|   |-- utils
+|   |   |-- PrivateRoute
+|   |   |   |-- PrivateRoute.tsx
+|   |   |   `-- index.ts
+|   |   |-- booleanToString.ts
+|   |   |-- formtDate.ts
+|   |   |-- generateUniqueId.ts
+|   |   |-- index.ts
+|   |   |-- scrollToBottom.ts
+|   |   `-- stringToBoolean.ts
+|   `-- vite-env.d.ts
+|-- tailwind.config.js
+|-- tsconfig.json
+|-- tsconfig.node.json
+`-- vite.config.ts
+
+36 directories, 93 files
